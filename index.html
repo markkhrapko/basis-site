@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Basis</title>
+<meta name="description" content="Ten minutes. $30,000. A network for life. No strings.">
+<meta property="og:title" content="The Basis">
+<meta property="og:description" content="Ten minutes. $30,000. A network for life. No strings.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://basis.build">
+<!-- PLACEHOLDER: add og:image before launch -->
+<!-- WORKING NAME: "The Basis". Swap name, glyph, domain if another name wins. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232337C6'/%3E%3Ctext x='32' y='46' font-family='monospace' font-size='42' fill='%23FBFBF7' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FBFBF7;
+    --ink:#16181D;
+    --blue:#2337C6;
+    --gray:#73767E;
+    --line:rgba(22,24,29,.16);
+    --grid:rgba(22,24,29,.05);
+    --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+    --disp:'Space Grotesk',var(--mono);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+  }
+  body{
+    font-family:var(--mono);
+    font-size:15px;
+    line-height:1.65;
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+  a{color:var(--blue);text-decoration:none;border-bottom:1px solid var(--blue)}
+  a:hover{background:var(--blue);color:var(--paper)}
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
+    outline:2px solid var(--blue);outline-offset:2px
+  }
+  ::selection{background:var(--blue);color:var(--paper)}
+
+  .statusbar{
+    border-bottom:1px solid var(--line);
+    padding:9px 20px;
+    font-size:11.5px;
+    letter-spacing:.08em;
+    color:var(--gray);
+    display:flex;gap:8px 18px;flex-wrap:wrap;justify-content:space-between;
+    background:var(--paper);
+  }
+  .statusbar b{color:var(--ink);font-weight:600}
+  .statusbar a{color:var(--ink);border-bottom-color:var(--ink)}
+  .statusbar a:hover{background:var(--ink);color:var(--paper)}
+  .statusbar .nav{display:flex;gap:16px}
+
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+
+  .hero{padding:84px 0 64px;border-bottom:1px solid var(--line)}
+  .hero.slim{padding:56px 0 44px}
+  .etym{font-size:12.5px;color:var(--gray);margin-bottom:34px}
+  .etym .g{
+    font-family:var(--disp);
+    font-weight:700;color:var(--blue);
+    font-size:15px;margin-right:6px;
+  }
+  .etym em{font-style:normal;color:var(--ink)}
+  h1{
+    font-family:var(--disp);
+    font-weight:700;
+    font-size:clamp(38px,7vw,68px);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    max-width:20ch;
+  }
+  .hero.slim h1{font-size:clamp(30px,5vw,44px)}
+  .hero .sub{margin-top:26px;max-width:52ch;font-size:16px}
+  .hero .sub b{font-weight:600}
+  .cta-row{margin-top:38px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    font-family:var(--mono);font-size:14px;font-weight:500;
+    padding:12px 22px;
+    border:1px solid var(--ink);
+    background:var(--paper);color:var(--ink);
+    cursor:pointer;border-radius:0;
+  }
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.primary{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+  .btn.primary:hover{background:var(--paper);color:var(--blue)}
+  a.btn{border-bottom:1px solid var(--ink)}
+  a.btn.primary{border-bottom:1px solid var(--blue)}
+
+  .rise{opacity:0;transform:translateY(10px);animation:rise .55s ease forwards}
+  .rise.d1{animation-delay:.08s}.rise.d2{animation-delay:.18s}.rise.d3{animation-delay:.3s}.rise.d4{animation-delay:.42s}
+  @keyframes rise{to{opacity:1;transform:none}}
+
+  section{padding:58px 0;border-bottom:1px solid var(--line)}
+  .label{font-size:11.5px;letter-spacing:.14em;color:var(--blue);margin-bottom:26px;font-weight:600}
+  h2{
+    font-family:var(--disp);font-weight:700;
+    font-size:clamp(22px,3.4vw,30px);letter-spacing:-.01em;
+    margin-bottom:18px;
+  }
+
+  table.offer{width:100%;border-collapse:collapse;font-size:14.5px}
+  table.offer td{border:1px solid var(--line);padding:14px 16px;vertical-align:top;background:rgba(251,251,247,.6)}
+  table.offer td:first-child{width:190px;color:var(--gray);font-size:12.5px;letter-spacing:.06em}
+  table.offer .big{font-family:var(--disp);font-weight:700;font-size:26px;letter-spacing:-.01em}
+
+  .rows .row{display:grid;grid-template-columns:180px 1fr;gap:18px;padding:14px 0;border-top:1px solid var(--line)}
+  .rows .row:last-child{border-bottom:1px solid var(--line)}
+  .rows .k{color:var(--gray);font-size:12.5px;letter-spacing:.06em;padding-top:2px}
+  .rows .v{max-width:62ch}
+  .rows .v b{font-weight:600}
+
+  .strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
+  .polaroid{flex:0 0 auto;scroll-snap-align:start;border:1px solid var(--line);background:#fff;padding:8px 8px 10px;max-width:280px}
+  .polaroid img{display:block;height:190px;width:auto;max-width:100%;object-fit:cover;filter:saturate(.92)}
+  .polaroid figcaption{font-size:11.5px;color:var(--gray);margin-top:8px;line-height:1.45}
+
+  .roster-note{max-width:62ch;margin-bottom:26px}
+  .roster{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .cell{
+    border:1px dashed var(--line);
+    min-height:118px;padding:12px 14px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    background:rgba(251,251,247,.5);
+  }
+  .cell .idx{font-family:var(--disp);font-weight:700;color:var(--blue);font-size:16px}
+  .cell .who{font-size:12px;color:var(--gray)}
+  .cell.founding{border-style:solid;border-color:var(--blue)}
+  .cell.founding .who{color:var(--ink)}
+
+  .formcard{border:1px solid var(--line);background:rgba(255,255,255,.65);padding:26px 24px;margin-top:8px}
+  .tabs{display:flex;margin-bottom:26px;border:1px solid var(--line);width:fit-content}
+  .tabs button{
+    font-family:var(--mono);font-size:13px;padding:10px 18px;
+    background:transparent;border:0;border-right:1px solid var(--line);
+    cursor:pointer;color:var(--gray);
+  }
+  .tabs button:last-child{border-right:0}
+  .tabs button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  fieldset{border:0;margin:0 0 26px}
+  legend{font-size:11.5px;letter-spacing:.14em;color:var(--blue);font-weight:600;margin-bottom:14px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .field label{font-size:12.5px;color:var(--gray)}
+  input[type=text],input[type=email],input[type=number],input[type=url],textarea{
+    font-family:var(--mono);font-size:14px;color:var(--ink);
+    background:var(--paper);border:1px solid var(--line);
+    padding:10px 12px;border-radius:0;width:100%;
+  }
+  textarea{min-height:110px;resize:vertical}
+  input:focus,textarea:focus{border-color:var(--blue)}
+  .checks{display:flex;gap:10px;flex-wrap:wrap}
+  .checks label{
+    border:1px solid var(--line);padding:9px 14px;font-size:13.5px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;background:var(--paper);
+  }
+  .checks input{accent-color:var(--blue)}
+  .checks label:has(input:checked){border-color:var(--blue);color:var(--blue)}
+  .drop{
+    border:1px dashed var(--line);padding:20px 14px;text-align:center;
+    font-size:13px;color:var(--gray);cursor:pointer;background:var(--paper);
+  }
+  .drop:hover{border-color:var(--blue);color:var(--blue)}
+  .drop input{display:none}
+  .filelist{font-size:12px;color:var(--ink);margin-top:8px;text-align:left}
+  .hint{font-size:12px;color:var(--gray);margin-top:6px}
+  .trust{font-size:12.5px;color:var(--gray);margin-top:16px}
+  .success{display:none;padding:14px 0}
+  .success h3{font-family:var(--disp);font-weight:700;font-size:24px;margin-bottom:10px}
+  .success p{max-width:52ch}
+
+  footer{padding:44px 0 64px;font-size:12.5px;color:var(--gray)}
+  footer .lineage{margin-bottom:12px;max-width:70ch}
+  footer a{color:var(--blue)}
+
+  @media(max-width:680px){
+    .rows .row{grid-template-columns:1fr;gap:4px}
+    .roster{grid-template-columns:1fr 1fr}
+    .grid2{grid-template-columns:1fr}
+    table.offer td:first-child{width:120px}
+  }
+  @media(max-width:440px){
+    .roster{grid-template-columns:1fr}
+  }
+
+</style>
+</head>
+<body>
+
+<div class="statusbar">
+  <span><b>APPLICATIONS ALWAYS OPEN</b> &middot; NO DEADLINES &middot; US ONLY, FOR NOW</span>
+  <span class="nav"><a href="apply.html">Apply</a><a href="nominate.html">Nominate</a></span>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <p class="etym rise d1">
+      <span class="g">B&thinsp;=&thinsp;{v&#8321;, v&#8322;, &hellip;}</span>
+      THE BASIS <em>(etym.)</em> the fewest independent vectors that span the space
+    </p>
+    <h1 class="rise d2">Ten minutes.<br>$30,000.<br>A network for life.</h1>
+    <p class="sub rise d3">The money and <b>the network</b>. No strings. Operators, engineers, scientists &mdash; anyone. Any age.</p>
+    <div class="cta-row rise d4">
+      <a class="btn primary" href="apply.html">Apply</a>
+      <a class="btn" href="nominate.html">Nominate &mdash; $1,000</a>
+    </div>
+  </div>
+</header>
+
+<section id="offer">
+  <div class="wrap">
+    <p class="label">[ THE OFFER ]</p>
+    <table class="offer">
+      <tr>
+        <td>THE MONEY</td>
+        <td><span class="big">$30,000</span><br>One wire. No equity, no reporting, no expectations. Spend it on anything.</td>
+      </tr>
+      <tr>
+        <td>THE NETWORK</td>
+        <td><span class="big">The room, for life</span><br>Private channel. Gatherings, dinners, discussions. Intros to anyone. Every fellow is exceptional. All optional, forever.</td>
+      </tr>
+      <tr>
+        <td>TITLE</td>
+        <td><b>Fellow, for life.</b> Never expires, never revoked.</td>
+      </tr>
+      <tr>
+        <td>EQUAL</td>
+        <td>Everyone gets the same. No tiers, no favorites.</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="label">[ HOW IT WORKS ]</p>
+    <div class="rows">
+      <div class="row"><div class="k">NO STRINGS</div><div class="v">We take nothing and expect nothing.</div></div>
+      <div class="row"><div class="k">EVERYTHING OPTIONAL</div><div class="v">The money, the title, and the door are yours forever. The rest is there if you want it.</div></div>
+      <div class="row"><div class="k">NEVER REJECTED</div><div class="v">Only not yet. Your application lives forever. Update it when there's something new.</div></div>
+      <div class="row"><div class="k">TRAJECTORIES</div><div class="v">Updates are read against your last one. What you build between them counts.</div></div>
+      <div class="row"><div class="k">FAST</div><div class="v">Exceptional applications are answered in days. New fellows announced monthly.</div></div>
+      <div class="row"><div class="k">PRIVATE</div><div class="v">Being announced or listed is optional. Quiet is fine.</div></div>
+      <div class="row"><div class="k">WHO</div><div class="v">Operators, engineers, scientists &mdash; anyone in the US. Any age. No credentials.</div></div>
+      <div class="row"><div class="k">ORIGIN</div><div class="v">We ran the <a href="https://duct-tape.build" target="_blank" rel="noopener">Duct Tape Prize</a>, then the <a href="https://eigen.build" target="_blank" rel="noopener">Eigenprize</a>. This is the permanent version.</div></div>
+      <div class="row"><div class="k">FUNDING</div><div class="v">Us, personally.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="rigs">
+  <div class="wrap">
+    <p class="label">[ WHERE WE COME FROM ]</p>
+    <h2>When we were younger, we scavenged for parts.</h2>
+    <p style="max-width:60ch;margin-bottom:26px">We made this so you don't have to.</p>
+    <!-- PLACEHOLDER IMAGES: hotlinked from eigen.build. Replace before launch. -->
+    <div class="strip">
+      <figure class="polaroid"><img src="https://eigen.build/images/image6.png" alt="Mark's first electrical setup" loading="lazy"><figcaption>Mark's first electrical setup (this is not AI generated)</figcaption></figure>
+      <figure class="polaroid"><img src="https://eigen.build/images/image1.jpg" alt="Spencer's first thermoelectric cloud chamber" loading="lazy"><figcaption>Spencer's first thermoelectric cloud chamber</figcaption></figure>
+      <figure class="polaroid"><img src="https://eigen.build/images/image3.jpg" alt="Steven's first neurostimulation machine" loading="lazy"><figcaption>Steven's first neurostimulation machine</figcaption></figure>
+      <figure class="polaroid"><img src="https://eigen.build/images/image5.png" alt="Spencer's first Kirlian photography device" loading="lazy"><figcaption>Spencer's first Kirlian photography device</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="fellows">
+  <div class="wrap">
+    <p class="label">[ THE FELLOWS ]</p>
+    <p class="roster-note">Founding fellows announced soon. The roster grows monthly. Being listed is optional &mdash; some fellows will never appear here.</p>
+    <div class="roster">
+      <div class="cell founding"><span class="idx">v&#8321;</span><span class="who">Announced soon</span></div>
+      <div class="cell founding"><span class="idx">v&#8322;</span><span class="who">Announced soon</span></div>
+      <div class="cell founding"><span class="idx">v&#8323;</span><span class="who">Announced soon</span></div>
+      <div class="cell"><span class="idx">v&#8324;</span><span class="who">&mdash;</span></div>
+      <div class="cell"><span class="idx">v&#8325;</span><span class="who">&mdash;</span></div>
+      <div class="cell"><span class="idx">v&#8326;</span><span class="who">Could be you</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="go">
+  <div class="wrap">
+    <p class="label">[ APPLY ]</p>
+    <h2>Ten minutes.</h2>
+    <p style="margin-bottom:26px">Please don't spend more than twenty.</p>
+    <div class="cta-row" style="margin-top:0">
+      <a class="btn primary" href="apply.html">Apply</a>
+      <a class="btn" href="nominate.html">Nominate &mdash; $1,000</a>
+    </div>
+    <p class="trust">We read every application.</p>
+  </div>
+</section>
+<footer>
+  <div class="wrap">
+    <p class="lineage">Run by
+      <a href="https://markkhrapko.com/" target="_blank" rel="noopener">Mark Khrapko</a>,
+      <a href="https://www.linkedin.com/in/stevenpang0/" target="_blank" rel="noopener">Steven Pang</a>,
+      <a href="https://www.linkedin.com/in/spencer-green-9bbb70251/" target="_blank" rel="noopener">Spencer Green</a>.
+      Funded personally.</p>
+    <!-- PLACEHOLDER EMAIL -->
+    <p>Questions? <a href="mailto:hello@basis.build">hello@basis.build</a>, subject line [basis].</p>
+    <p style="margin-top:12px">Under 18: a guardian signs the paperwork. Apply anyway.</p>
+  </div>
+</footer>
+
+</body>
+</html>
