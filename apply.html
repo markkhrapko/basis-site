@@ -235,7 +235,7 @@
         <fieldset>
           <legend>[ YOUR WORK &mdash; THE ONLY SECTION THAT MATTERS ]</legend>
           <div class="field">
-            <label>Select all that apply</label>
+            <label>Check any that fit</label>
             <div class="checks">
               <label><input type="checkbox" name="cat" value="operator">Operator</label>
               <label><input type="checkbox" name="cat" value="engineer">Engineer</label>
@@ -250,11 +250,11 @@
           </div>
           <div class="field">
             <label>Upload files</label>
-            <label class="drop" for="a-files">Drag &amp; drop or <u>browse</u> &mdash; PDFs, images, zips, whatever tells your story.<input type="file" id="a-files" multiple onchange="listFiles(this,'a-filelist')"></label>
+            <label class="drop" for="a-files">Drag &amp; drop or <u>browse</u> &mdash; PDFs, images, zips, whatever shows the work.<input type="file" id="a-files" multiple onchange="listFiles(this,'a-filelist')"></label>
             <div class="filelist" id="a-filelist"></div>
           </div>
           <div class="field">
-            <label for="a-q1">What is the most incredible thing you have built, discovered, or done?</label>
+            <label for="a-q1">What's the best thing you've built, discovered, or done?</label>
             <textarea id="a-q1" required></textarea>
           </div>
           <div class="field">
@@ -264,12 +264,12 @@
           <div class="field">
             <label for="a-q3">What are you doing now, and what's next?</label>
             <textarea id="a-q3" required></textarea>
-            <p class="hint">Your updates are read against this.</p>
+            <p class="hint">We read your updates against this.</p>
           </div>
         </fieldset>
 
         <fieldset>
-          <legend>[ QUESTIONS ]</legend>
+          <legend>[ THE REST ]</legend>
           <div class="field"><label for="a-who">Who are you? (optional)</label><textarea id="a-who"></textarea></div>
           <div class="field"><label for="a-heard">How did you hear about this?</label><input type="text" id="a-heard"></div>
         </fieldset>
@@ -286,8 +286,8 @@
     <div class="formcard" id="pane-update" style="display:none">
       <form id="form-update" onsubmit="return submitForm(event,'update')">
         <fieldset>
-          <legend>[ YOUR LIVING APPLICATION ]</legend>
-          <p style="max-width:60ch;margin-bottom:18px">Your application doesn't expire. Tell us what's new.</p>
+          <legend>[ YOUR APPLICATION ]</legend>
+          <p style="max-width:60ch;margin-bottom:18px">It doesn't expire. Tell us what's new.</p>
           <div class="field"><label for="u-email">The email you applied with</label><input type="email" id="u-email" required></div>
           <div class="field">
             <label for="u-new">What's new since last time?</label>
