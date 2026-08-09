@@ -166,6 +166,10 @@
   .cell:hover .bio,.cell:focus-within .bio{visibility:visible;opacity:1;transform:scale(1);pointer-events:auto}
   .cell .bio img{display:block;width:100%;height:150px;object-fit:cover;object-position:center 25%;margin-bottom:8px;filter:saturate(.92)}
   .cell .bio b{font-weight:600}
+  .roster.adv{display:flex;flex-wrap:wrap;gap:10px}
+  .adv .cell{flex:0 0 132px}
+  .adv .cell.held{min-height:96px}
+  .adv .cell .who{margin-top:auto}
 
   footer{padding:44px 0 64px;font-size:12.5px;color:var(--gray)}
   footer .lineage{margin-bottom:12px;max-width:70ch}
@@ -245,6 +249,7 @@
       <div class="row"><div class="k">QUIET</div><div class="v">Being announced or listed is optional. Quiet is fine.</div></div>
       <div class="row"><div class="k">WHO</div><div class="v">Operators, engineers, scientists &mdash; anyone. Any age. No credentials. Always open.</div></div>
       <div class="row"><div class="k">READERS</div><div class="v">We read every application.</div></div>
+      <div class="row"><div class="k">COOL</div><div class="v">Some applications don't join the cohort but are just cool. Those get $3,000.</div></div>
     </div>
   </div>
 </section>
@@ -262,8 +267,7 @@
         <span class="bio"><img src="images/aidan-smith.jpg" alt="Aidan Smith"><a href="https://aidanjs.com" target="_blank" rel="noopener"><b>Aidan Smith</b></a><br>Co-founder of Flapping Airplanes. Before that, machine learning at Neuralink.</span></div>
       <div class="cell held"><img class="face" src="images/lucas-pabarcius.jpg" alt=""><span class="idx">v&#8323;</span><span class="who"><a href="https://atum.works" target="_blank" rel="noopener">Lucas Pabarcius</a></span>
         <span class="bio"><img src="images/lucas-pabarcius.jpg" alt="Lucas Pabarcius"><a href="https://atum.works" target="_blank" rel="noopener"><b>Lucas Pabarcius</b></a><br>Co-founder of Atum Works &mdash; 3D-printed chips at 100 nanometers. Caltech physics before that.</span></div>
-      <div class="cell held"><img class="face" src="images/paul-dituro.jpg" alt=""><span class="idx">v&#8324;</span><span class="who"><span>Paul DiTuro</span></span>
-        <span class="bio"><img src="images/paul-dituro.jpg" alt="Paul DiTuro"><b>Paul DiTuro</b><br>Served in US military special forces. Was at Fermilab.</span></div>
+      <div class="cell"><span class="idx">v&#8324;</span><span class="who">&mdash;</span></div>
       <div class="cell"><span class="idx">v&#8325;</span><span class="who">&mdash;</span></div>
       <div class="cell"><span class="idx">v&#8326;</span><span class="who">&mdash;</span></div>
       <div class="cell"><span class="idx">v&#8327;</span><span class="who">&mdash;</span></div>
@@ -282,6 +286,22 @@
       <div class="cell"><span class="idx">v&#8322;&#8320;</span><span class="who">&mdash;</span></div>
     </div>
     <div class="cohort next"><span class="cy">2027</span><span class="ct">THE SET IS OPEN</span></div>
+  </div>
+</section>
+
+<section id="advisors">
+  <div class="wrap">
+    <p class="label">[ ADVISORS ]</p>
+    <p class="roster-note">Great people who came before us.</p>
+    <div class="roster adv">
+      <div class="cell held"><img class="face" src="images/paul-dituro.jpg" alt=""><span class="who"><span>Paul DiTuro</span></span>
+        <span class="bio"><img src="images/paul-dituro.jpg" alt="Paul DiTuro"><b>Paul DiTuro</b><br>Served in US military special forces. Was at Fermilab.</span></div>
+      <div class="cell held"><img class="face" src="images/spyridon-michalakis.jpg" alt=""><span class="who"><a href="https://iqim.caltech.edu/profile/spiros-michalakis/" target="_blank" rel="noopener">Spyridon Michalakis</a></span>
+        <span class="bio"><img src="images/spyridon-michalakis.jpg" alt="Spyridon Michalakis"><a href="https://iqim.caltech.edu/profile/spiros-michalakis/" target="_blank" rel="noopener"><b>Spyridon Michalakis</b></a><br>Quantum physicist at Caltech. Co-solved the quantum Hall conjecture; science advisor on Ant-Man.</span></div>
+      <!-- Frank Wilczek photo: Betsy Devine, CC BY 2.5, via Wikimedia Commons -->
+      <div class="cell held"><img class="face" src="images/frank-wilczek.jpg" alt=""><span class="who"><a href="https://www.frankawilczek.com/" target="_blank" rel="noopener">Frank Wilczek</a></span>
+        <span class="bio"><img src="images/frank-wilczek.jpg" alt="Frank Wilczek"><a href="https://www.frankawilczek.com/" target="_blank" rel="noopener"><b>Frank Wilczek</b></a><br>Nobel laureate in physics. Named the axion and the anyon.</span></div>
+    </div>
   </div>
 </section>
 
