@@ -266,7 +266,7 @@
           </div>
           <div class="field">
             <label>Upload files</label>
-            <label class="drop" for="a-files">Drag &amp; drop or <u>browse</u> &mdash; anything useful.<input type="file" id="a-files" multiple onchange="listFiles(this,'a-filelist')"></label>
+            <label class="drop" for="a-files">Drag &amp; drop or <u>browse</u> &mdash; anything useful. Up to 10 files, 25MB each; big things, share a link.<input type="file" id="a-files" multiple onchange="listFiles(this,'a-filelist')"></label>
             <div class="filelist" id="a-filelist"></div>
           </div>
           <div class="field">
@@ -337,10 +337,24 @@
     document.getElementById('tab-new').setAttribute('aria-pressed', isNew?'true':'false');
     document.getElementById('tab-update').setAttribute('aria-pressed', isNew?'false':'true');
   }
+  var MAX_FILE_MB = 25, MAX_FILES = 10;
+  function fileProblem(input){
+    var fs = input.files;
+    if (fs.length > MAX_FILES) return 'Up to ' + MAX_FILES + ' files \u2014 please remove ' + (fs.length - MAX_FILES) + '.';
+    for (var i=0;i<fs.length;i++){
+      if (fs[i].size > MAX_FILE_MB*1024*1024)
+        return '"' + fs[i].name + '" is ' + Math.round(fs[i].size/1048576) + 'MB, over the ' + MAX_FILE_MB + 'MB limit. Share a link instead, or compress it.';
+    }
+    return '';
+  }
   function listFiles(input, targetId){
+    var el = document.getElementById(targetId);
+    var problem = fileProblem(input);
+    if (problem){ el.style.color = 'var(--blue)'; el.textContent = problem; return; }
+    el.style.color = 'var(--gray)';
     var out = [];
     for (var i=0;i<input.files.length;i++){ out.push(input.files[i].name); }
-    document.getElementById(targetId).textContent = out.length ? '\u2192 ' + out.join(', ') : '';
+    el.textContent = out.length ? '\u2192 ' + out.join(', ') : '';
   }
   function makeChips(boxId, opts){
     opts = opts || {};
@@ -413,9 +427,13 @@
     var form=document.getElementById('form-'+which);
     var btn=form.querySelector('button[type=submit]');
     var status=ensureStatus(form);
+    var fileInput=document.getElementById(which==='apply'?'a-files':'u-files');
+    if(fileInput && fileInput.files.length){
+      var fp=fileProblem(fileInput);
+      if(fp){ status.style.color='var(--blue)'; status.textContent=fp; btn.disabled=false; return; }
+    }
     btn.disabled=true; status.style.color='var(--gray)'; status.textContent='Sending…';
     var fields = which==='apply'?collectApply():collectUpdate();
-    var fileInput=document.getElementById(which==='apply'?'a-files':'u-files');
     var files=fileInput?fileInput.files:[];
     var up = files.length?BASIS.uploadFiles(files,function(i,p){status.textContent='Uploading file '+(i+1)+' of '+files.length+' — '+Math.round(p*100)+'%';}):Promise.resolve([]);
     up.then(function(keys){ status.textContent='Sending…'; return BASIS.submit(which, fields, keys, 'apply-'+which); })
