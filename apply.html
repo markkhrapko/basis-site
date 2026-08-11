@@ -238,7 +238,10 @@
             </div>
             <div class="field"><label for="a-city">City</label><input type="text" id="a-city" required></div>
             <div class="field"><label for="a-country">Country</label><input type="text" id="a-country" required></div>
-            <div class="field"><label for="a-org">Org / school (if any)</label><input type="text" id="a-org"></div>
+            <div class="field"><label for="a-org">Orgs / schools (if any)</label>
+              <div class="chips" id="org-chips"><input type="text" id="a-org"></div>
+              <p class="hint">As many as you want. Press enter after each.</p>
+            </div>
             <div class="field"><label for="a-link">LinkedIn / social</label><input type="url" id="a-link" placeholder="https://"></div>
           </div>
         </fieldset>
@@ -339,31 +342,38 @@
     for (var i=0;i<input.files.length;i++){ out.push(input.files[i].name); }
     document.getElementById(targetId).textContent = out.length ? '\u2192 ' + out.join(', ') : '';
   }
-  var emailBox = document.getElementById('email-chips');
-  var emailInput = document.getElementById('a-email');
-  function addEmailChip(){
-    var v = emailInput.value.trim().replace(/,+$/,'');
-    if(!v) return;
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return;
-    var chip = document.createElement('span');
-    chip.className = 'chip';
-    chip.appendChild(document.createTextNode(v));
-    var x = document.createElement('button');
-    x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + v); x.textContent = '×';
-    x.onclick = function(){ chip.remove(); };
-    chip.appendChild(x);
-    emailBox.insertBefore(chip, emailInput);
-    emailInput.value = '';
-  }
-  emailBox.addEventListener('click', function(){ emailInput.focus(); });
-  emailInput.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' ' || e.key === ','){ e.preventDefault(); addEmailChip(); }
-    else if(e.key === 'Backspace' && emailInput.value === ''){
-      var chips = emailBox.querySelectorAll('.chip');
-      if(chips.length) chips[chips.length-1].remove();
+  function makeChips(boxId, opts){
+    opts = opts || {};
+    var box = document.getElementById(boxId);
+    var input = box.querySelector('input');
+    function add(){
+      var v = input.value.trim().replace(/,+$/,'');
+      if(!v) return;
+      if(opts.validate && !opts.validate(v)) return;
+      var chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.appendChild(document.createTextNode(v));
+      var x = document.createElement('button');
+      x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + v); x.textContent = '×';
+      x.onclick = function(){ chip.remove(); };
+      chip.appendChild(x);
+      box.insertBefore(chip, input);
+      input.value = '';
     }
-  });
-  emailInput.addEventListener('blur', addEmailChip);
+    box.addEventListener('click', function(){ input.focus(); });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ',' || (opts.spaceToo && e.key === ' ')){ e.preventDefault(); add(); }
+      else if(e.key === 'Backspace' && input.value === ''){
+        var chips = box.querySelectorAll('.chip');
+        if(chips.length) chips[chips.length-1].remove();
+      }
+    });
+    input.addEventListener('blur', add);
+    return add;
+  }
+  var emailInput = document.getElementById('a-email');
+  var addEmailChip = makeChips('email-chips', {spaceToo: true, validate: function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }});
+  makeChips('org-chips');
   function submitForm(e, which){
     e.preventDefault();
     if(which === 'apply'){
