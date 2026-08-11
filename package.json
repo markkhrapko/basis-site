@@ -1,0 +1,13 @@
+{
+  "name": "basis-fellowship-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "22.x" },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.658.0",
+    "@aws-sdk/s3-request-presigner": "^3.658.0",
+    "@upstash/ratelimit": "^2.0.3",
+    "@upstash/redis": "^1.34.0"
+  }
+}

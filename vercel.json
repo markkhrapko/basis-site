@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/submit.js": { "maxDuration": 15 },
+    "api/upload-token.js": { "maxDuration": 10 },
+    "api/session.js": { "maxDuration": 10 },
+    "api/file.js": { "maxDuration": 30 },
+    "api/worker.js": { "maxDuration": 300 },
+    "api/sweeper.js": { "maxDuration": 120 },
+    "api/canary.js": { "maxDuration": 60 }
+  },
+  "crons": [
+    { "path": "/api/worker", "schedule": "* * * * *" },
+    { "path": "/api/sweeper", "schedule": "0 4 * * *" },
+    { "path": "/api/canary", "schedule": "0 */6 * * *" }
+  ]
+}
