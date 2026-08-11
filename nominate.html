@@ -157,6 +157,12 @@
   }
   textarea{min-height:110px;resize:vertical}
   input:focus,textarea:focus{border-color:var(--blue)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;border:1px solid var(--line);background:var(--paper);padding:6px 8px;cursor:text}
+  .chips:focus-within{border-color:var(--blue)}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--blue);color:var(--blue);font-size:12.5px;padding:2px 8px;background:var(--paper)}
+  .chip button{all:unset;cursor:pointer;font-size:12px;line-height:1}
+  .chip button:hover{color:var(--ink)}
+  .chips input{border:0;outline:0;background:transparent;font-family:var(--mono);font-size:14px;color:var(--ink);flex:1;min-width:140px;padding:4px 2px}
   .checks{display:flex;gap:10px;flex-wrap:wrap}
   .checks label{
     border:1px solid var(--line);padding:9px 14px;font-size:13.5px;cursor:pointer;
@@ -216,10 +222,18 @@
     <div class="formcard" style="margin-top:0">
       <form id="form-nominate" onsubmit="return submitForm(event,'nominate')">
         <div class="grid2">
-          <div class="field"><label for="n-yname">Your name</label><input type="text" id="n-yname" required></div>
-          <div class="field"><label for="n-yemail">Your email</label><input type="email" id="n-yemail" required></div>
-          <div class="field"><label for="n-tname">Their name</label><input type="text" id="n-tname" required></div>
-          <div class="field"><label for="n-temail">Their email or link</label><input type="text" id="n-temail" required></div>
+          <div class="field"><label for="n-yfname">Your first name</label><input type="text" id="n-yfname" required></div>
+          <div class="field"><label for="n-ylname">Your last name</label><input type="text" id="n-ylname" required></div>
+          <div class="field"><label for="n-yemail">Your emails</label>
+            <div class="chips" id="yemail-chips"><input type="text" id="n-yemail" inputmode="email" autocomplete="email"></div>
+            <p class="hint">As many as you want.</p>
+          </div>
+          <div class="field"><label for="n-temail">Their emails or links</label>
+            <div class="chips" id="temail-chips"><input type="text" id="n-temail"></div>
+            <p class="hint">Whatever you have.</p>
+          </div>
+          <div class="field"><label for="n-tfname">Their first name</label><input type="text" id="n-tfname" required></div>
+          <div class="field"><label for="n-tlname">Their last name</label><input type="text" id="n-tlname" required></div>
         </div>
         <div class="field"><label for="n-why">Why them?</label><textarea id="n-why" required></textarea></div>
         <button class="btn primary" type="submit">Send nomination</button>
@@ -234,8 +248,44 @@
 </section>
 
 <script>
+  function makeChips(boxId, opts){
+    opts = opts || {};
+    var box = document.getElementById(boxId);
+    var input = box.querySelector('input');
+    function add(){
+      var v = input.value.trim().replace(/,+$/,'');
+      if(!v) return;
+      if(opts.validate && !opts.validate(v)) return;
+      var chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.appendChild(document.createTextNode(v));
+      var x = document.createElement('button');
+      x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + v); x.textContent = '×';
+      x.onclick = function(){ chip.remove(); };
+      chip.appendChild(x);
+      box.insertBefore(chip, input);
+      input.value = '';
+    }
+    box.addEventListener('click', function(){ input.focus(); });
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ',' || (opts.spaceToo && e.key === ' ')){ e.preventDefault(); add(); }
+      else if(e.key === 'Backspace' && input.value === ''){
+        var chips = box.querySelectorAll('.chip');
+        if(chips.length) chips[chips.length-1].remove();
+      }
+    });
+    input.addEventListener('blur', add);
+    return add;
+  }
+  var addYourEmail = makeChips('yemail-chips', {spaceToo: true, validate: function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }});
+  var addTheirContact = makeChips('temail-chips', {spaceToo: true});
   function submitForm(e, which){
     e.preventDefault();
+    if(which === 'nominate'){
+      addYourEmail(); addTheirContact();
+      if(!document.querySelector('#yemail-chips .chip')){ document.getElementById('n-yemail').focus(); return false; }
+      if(!document.querySelector('#temail-chips .chip')){ document.getElementById('n-temail').focus(); return false; }
+    }
     // FRONT-END ONLY: wire to your backend.
     document.getElementById('form-'+which).style.display='none';
     document.getElementById('success-'+which).style.display='block';
