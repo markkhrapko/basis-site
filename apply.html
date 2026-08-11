@@ -157,6 +157,12 @@
   }
   textarea{min-height:110px;resize:vertical}
   input:focus,textarea:focus{border-color:var(--blue)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;border:1px solid var(--line);background:var(--paper);padding:6px 8px;cursor:text}
+  .chips:focus-within{border-color:var(--blue)}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--blue);color:var(--blue);font-size:12.5px;padding:2px 8px;background:var(--paper)}
+  .chip button{all:unset;cursor:pointer;font-size:12px;line-height:1}
+  .chip button:hover{color:var(--ink)}
+  .chips input{border:0;outline:0;background:transparent;font-family:var(--mono);font-size:14px;color:var(--ink);flex:1;min-width:140px;padding:4px 2px}
   .checks{display:flex;gap:10px;flex-wrap:wrap}
   .checks label{
     border:1px solid var(--line);padding:9px 14px;font-size:13.5px;cursor:pointer;
@@ -226,7 +232,10 @@
             <div class="field"><label for="a-fname">First name</label><input type="text" id="a-fname" required></div>
             <div class="field"><label for="a-lname">Last name</label><input type="text" id="a-lname" required></div>
             <div class="field"><label for="a-age">Age</label><input type="number" id="a-age" min="1" max="120" required></div>
-            <div class="field"><label for="a-email">Email</label><input type="email" id="a-email" required></div>
+            <div class="field"><label for="a-email">Emails</label>
+              <div class="chips" id="email-chips"><input type="text" id="a-email" inputmode="email" autocomplete="email"></div>
+              <p class="hint">As many as you want. A .edu especially, if you have one.</p>
+            </div>
             <div class="field"><label for="a-city">City</label><input type="text" id="a-city" required></div>
             <div class="field"><label for="a-country">Country</label><input type="text" id="a-country" required></div>
             <div class="field"><label for="a-org">Org / school (if any)</label><input type="text" id="a-org"></div>
@@ -330,8 +339,37 @@
     for (var i=0;i<input.files.length;i++){ out.push(input.files[i].name); }
     document.getElementById(targetId).textContent = out.length ? '\u2192 ' + out.join(', ') : '';
   }
+  var emailBox = document.getElementById('email-chips');
+  var emailInput = document.getElementById('a-email');
+  function addEmailChip(){
+    var v = emailInput.value.trim().replace(/,+$/,'');
+    if(!v) return;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) return;
+    var chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.appendChild(document.createTextNode(v));
+    var x = document.createElement('button');
+    x.type = 'button'; x.setAttribute('aria-label', 'Remove ' + v); x.textContent = '×';
+    x.onclick = function(){ chip.remove(); };
+    chip.appendChild(x);
+    emailBox.insertBefore(chip, emailInput);
+    emailInput.value = '';
+  }
+  emailBox.addEventListener('click', function(){ emailInput.focus(); });
+  emailInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter' || e.key === ' ' || e.key === ','){ e.preventDefault(); addEmailChip(); }
+    else if(e.key === 'Backspace' && emailInput.value === ''){
+      var chips = emailBox.querySelectorAll('.chip');
+      if(chips.length) chips[chips.length-1].remove();
+    }
+  });
+  emailInput.addEventListener('blur', addEmailChip);
   function submitForm(e, which){
     e.preventDefault();
+    if(which === 'apply'){
+      addEmailChip();
+      if(!document.querySelector('#email-chips .chip')){ emailInput.focus(); return false; }
+    }
     // FRONT-END ONLY: wire to your backend.
     document.getElementById('form-'+which).style.display='none';
     document.getElementById('success-'+which).style.display='block';
