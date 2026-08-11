@@ -21,9 +21,10 @@ window.BASIS = {
   var B = window.BASIS;
 
   // A short reference the applicant can quote; also stored with the submission.
+  // Time-seeded + random base36 so it stays unique across thousands of applicants.
   function reference() {
-    var n = Math.floor(1000 + Math.random() * 9000);
-    return 'BF-2026-' + n;
+    var s = (Date.now().toString(36) + Math.random().toString(36).slice(2, 5)).toUpperCase();
+    return 'BF-2026-' + s.slice(-6);
   }
 
   function endpointFor(type) {
@@ -87,6 +88,7 @@ window.BASIS = {
         if (xhr.status >= 200 && xhr.status < 300) { resolve(ref); return; }
         var msg = 'submit';
         if (xhr.status === 429) { msg = 'rate'; }
+        else if (xhr.status === 413) { msg = 'toolarge'; }
         else { try { var j = JSON.parse(xhr.responseText); if (j && j.errors && j.errors.length) msg = j.errors[0].message; } catch (_) {} }
         reject(new Error(msg));
       };
