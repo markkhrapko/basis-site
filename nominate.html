@@ -247,6 +247,7 @@
   </div>
 </section>
 
+<script src="basis-forms.js"></script>
 <script>
   function makeChips(boxId, opts){
     opts = opts || {};
@@ -279,16 +280,43 @@
   }
   var addYourEmail = makeChips('yemail-chips', {spaceToo: true, validate: function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }});
   var addTheirContact = makeChips('temail-chips', {spaceToo: true});
+  function g(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
   function submitForm(e, which){
     e.preventDefault();
-    if(which === 'nominate'){
-      addYourEmail(); addTheirContact();
-      if(!document.querySelector('#yemail-chips .chip')){ document.getElementById('n-yemail').focus(); return false; }
-      if(!document.querySelector('#temail-chips .chip')){ document.getElementById('n-temail').focus(); return false; }
+    addYourEmail(); addTheirContact();
+    if(!document.querySelector('#yemail-chips .chip')){ document.getElementById('n-yemail').focus(); return false; }
+    if(!document.querySelector('#temail-chips .chip')){ document.getElementById('n-temail').focus(); return false; }
+    if(!window.BASIS || !BASIS.LIVE){
+      document.getElementById('form-'+which).style.display='none';
+      document.getElementById('success-'+which).style.display='block';
+      return false;
     }
-    // FRONT-END ONLY: wire to your backend.
-    document.getElementById('form-'+which).style.display='none';
-    document.getElementById('success-'+which).style.display='block';
+    var form=document.getElementById('form-nominate');
+    var btn=form.querySelector('button[type=submit]');
+    var status=form.querySelector('.formstatus') || (function(){ var s=document.createElement('p'); s.className='formstatus trust'; form.appendChild(s); return s; })();
+    var fields={
+      yourFirstName:g('n-yfname'), yourLastName:g('n-ylname'),
+      emails:BASIS.chipValues('yemail-chips'),
+      theirFirstName:g('n-tfname'), theirLastName:g('n-tlname'),
+      theirContacts:BASIS.chipValues('temail-chips'),
+      why:g('n-why')
+    };
+    btn.disabled=true; status.style.color='var(--gray)'; status.textContent='Sending…';
+    BASIS.submit('nominate', fields, [], 'nominate')
+      .then(function(){
+        var s=document.getElementById('success-nominate');
+        s.innerHTML='<h3>Sent.</h3><p>We’ll reach out to them. Thanks for looking out.</p>';
+        form.style.display='none'; s.style.display='block';
+      })
+      .catch(function(err){
+        btn.disabled=false; status.innerHTML=''; status.style.color='var(--blue)';
+        var rate=err&&/rate/.test(err.message||'');
+        var msg=document.createElement('div');
+        msg.textContent=rate?'Too many attempts — wait a few minutes and press retry.':'Something went wrong. Your entry is still here — press retry.';
+        status.appendChild(msg);
+        var retry=document.createElement('button'); retry.type='button'; retry.className='btn'; retry.textContent='Retry'; retry.style.marginTop='10px'; retry.onclick=function(){ submitForm(new Event('submit'),'nominate'); };
+        status.appendChild(retry);
+      });
     return false;
   }
 </script>

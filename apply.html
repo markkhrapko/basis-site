@@ -328,6 +328,7 @@
   </div>
 </section>
 
+<script src="basis-forms.js"></script>
 <script>
   function setTab(which){
     var isNew = which==='new';
@@ -373,17 +374,90 @@
   var emailInput = document.getElementById('a-email');
   var addEmailChip = makeChips('email-chips', {spaceToo: true, validate: function(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }});
   makeChips('org-chips');
+  function g(id){ var el=document.getElementById(id); return el?el.value.trim():''; }
+  function collectApply(){
+    return {
+      firstName:g('a-fname'), lastName:g('a-lname'), age:g('a-age'),
+      emails:window.BASIS?BASIS.chipValues('email-chips'):[],
+      city:g('a-city'), country:g('a-country'),
+      orgs:window.BASIS?BASIS.chipValues('org-chips'):[], link:g('a-link'), phone:g('a-phone'),
+      categories:[].map.call(document.querySelectorAll('input[name=cat]:checked'),function(c){return c.value;}),
+      portfolio:g('a-portfolio'),
+      q1:g('a-q1'), q2:g('a-q2'), q3:g('a-q3'), q4:g('a-q4'),
+      who:g('a-who'), heard:g('a-heard')
+    };
+  }
+  function collectUpdate(){ return { emails:[g('u-email')].filter(Boolean), whatsNew:g('u-new') }; }
+
   function submitForm(e, which){
     e.preventDefault();
     if(which === 'apply'){
       addEmailChip();
       if(!document.querySelector('#email-chips .chip')){ emailInput.focus(); return false; }
     }
-    // FRONT-END ONLY: wire to your backend.
-    document.getElementById('form-'+which).style.display='none';
-    document.getElementById('success-'+which).style.display='block';
+    if(!window.BASIS || !BASIS.LIVE){
+      document.getElementById('form-'+which).style.display='none';
+      document.getElementById('success-'+which).style.display='block';
+      return false;
+    }
+    runSubmit(which);
     return false;
   }
+
+  function ensureStatus(form){
+    var s=form.querySelector('.formstatus');
+    if(!s){ s=document.createElement('p'); s.className='formstatus trust'; form.appendChild(s); }
+    return s;
+  }
+  function runSubmit(which){
+    var form=document.getElementById('form-'+which);
+    var btn=form.querySelector('button[type=submit]');
+    var status=ensureStatus(form);
+    btn.disabled=true; status.style.color='var(--gray)'; status.textContent='Sending…';
+    var fields = which==='apply'?collectApply():collectUpdate();
+    var fileInput=document.getElementById(which==='apply'?'a-files':'u-files');
+    var files=fileInput?fileInput.files:[];
+    var up = files.length?BASIS.uploadFiles(files,function(i,p){status.textContent='Uploading file '+(i+1)+' of '+files.length+' — '+Math.round(p*100)+'%';}):Promise.resolve([]);
+    up.then(function(keys){ status.textContent='Sending…'; return BASIS.submit(which, fields, keys, 'apply-'+which); })
+      .then(function(id){ showSuccess(which,id); })
+      .catch(function(err){ showError(which, form, fields, err); btn.disabled=false; });
+  }
+  function showSuccess(which,id){
+    var s=document.getElementById('success-'+which);
+    if(which==='apply'){
+      s.innerHTML='<h3>We got it.</h3><p>Your reference: <b>'+id+'</b> — keep it. A confirmation is on its way; check spam and mark it not-spam so our replies reach you. Nothing within the hour? Email <a href="mailto:mark@orbit.engineering">mark@orbit.engineering</a>.</p>';
+    } else {
+      s.innerHTML='<h3>Updated.</h3><p>We’ll read it against your last one. Reference: <b>'+id+'</b>.</p>';
+    }
+    document.getElementById('form-'+which).style.display='none';
+    s.style.display='block';
+    try{ localStorage.removeItem('basis-save-'+which); }catch(_){}
+  }
+  function showError(which, form, fields, err){
+    var status=ensureStatus(form); status.innerHTML=''; status.style.color='var(--blue)';
+    var rate=err&&/rate/.test(err.message||'');
+    var msg=document.createElement('div');
+    msg.textContent=rate?'Too many attempts — wait a few minutes and press retry. Your answers are safe.':'Something went wrong sending it. Your answers are safe — retry, or download them and email us.';
+    status.appendChild(msg);
+    var retry=document.createElement('button'); retry.type='button'; retry.className='btn'; retry.textContent='Retry'; retry.style.marginTop='10px'; retry.onclick=function(){ runSubmit(which); };
+    var dl=document.createElement('button'); dl.type='button'; dl.className='btn'; dl.textContent='Download my answers'; dl.style.margin='10px 0 0 8px'; dl.onclick=function(){ BASIS.downloadAnswers('basis-application', fields); };
+    status.appendChild(retry); status.appendChild(dl);
+  }
+
+  // Autosave: survive a crash/refresh mid-application.
+  (function(){
+    ['form-apply','form-update'].forEach(function(fid){
+      var form=document.getElementById(fid); if(!form) return;
+      var key='basis-save-'+(fid==='form-apply'?'apply':'update');
+      try{ var saved=JSON.parse(localStorage.getItem(key)||'null');
+        if(saved) form.querySelectorAll('input,textarea').forEach(function(el){ if(el.id&&saved[el.id]!=null&&el.type!=='file') el.value=saved[el.id]; });
+      }catch(_){}
+      form.addEventListener('input',function(){
+        try{ var o={}; form.querySelectorAll('input,textarea').forEach(function(el){ if(el.id&&el.type!=='file') o[el.id]=el.value; });
+          localStorage.setItem(key, JSON.stringify(o)); }catch(_){}
+      });
+    });
+  })();
 </script>
 <footer>
   <div class="wrap">
