@@ -130,9 +130,9 @@
   .rows .v{max-width:62ch}
   .rows .v b{font-weight:600}
 
-  .strip{display:flex;gap:14px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x mandatory}
-  .polaroid{flex:0 0 auto;scroll-snap-align:start;border:1px solid var(--line);background:#fff;padding:8px 8px 10px;max-width:280px}
-  .polaroid img{display:block;width:250px;height:188px;object-fit:cover;filter:saturate(.92)}
+  .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .polaroid{border:1px solid var(--line);background:#fff;padding:8px 8px 10px}
+  .polaroid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.92)}
   .strip .polaroid:first-child img{object-position:88% 50%}
   .polaroid figcaption{font-size:11.5px;color:var(--gray);margin-top:8px;line-height:1.45}
 
@@ -179,9 +179,11 @@
   footer a{color:var(--blue)}
 
   @media(max-width:680px){
+    body{overflow-x:clip}
     .rows .row{grid-template-columns:1fr;gap:4px}
     .roster{grid-template-columns:repeat(4,1fr)}
     table.offer td:first-child{width:120px}
+    .strip{grid-template-columns:1fr;gap:18px}
   }
   @media(max-width:440px){
     .roster{grid-template-columns:repeat(2,1fr)}
