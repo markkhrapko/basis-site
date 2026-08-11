@@ -10,10 +10,10 @@
  * success screen, send nothing) so no visitor ever hits a dead endpoint.
  */
 window.BASIS = {
-  LIVE: false,
+  LIVE: true,
   FORMSPREE: {
-    apply: 'https://formspree.io/f/REPLACE_APPLY_ID',      // handles application + update
-    nominate: 'https://formspree.io/f/REPLACE_NOMINATE_ID',
+    apply: 'https://formspree.io/f/xzeprogn',      // handles application + update
+    nominate: 'https://formspree.io/f/moeadrlq',
   },
 };
 
