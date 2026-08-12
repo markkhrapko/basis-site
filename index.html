@@ -131,10 +131,26 @@
   .rows .v b{font-weight:600}
 
   .strip{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-  .polaroid{border:1px solid var(--line);background:#fff;padding:8px 8px 10px}
-  .polaroid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;filter:saturate(.92)}
+  .polaroid{
+    border:1px solid var(--line);background:#fff;padding:10px 10px 12px;
+    border-radius:6px;
+    transform:rotate(var(--tilt,0deg));
+    box-shadow:0 1px 2px rgba(22,24,29,.06),0 8px 20px rgba(22,24,29,.08);
+    transition:transform .3s ease,box-shadow .3s ease;
+  }
+  .strip .polaroid:nth-child(1){--tilt:-1deg}
+  .strip .polaroid:nth-child(2){--tilt:.7deg}
+  .strip .polaroid:nth-child(3){--tilt:-.5deg}
+  @media(hover:hover){
+    .strip .polaroid:hover{
+      transform:rotate(0deg) translateY(-4px);
+      box-shadow:0 2px 4px rgba(22,24,29,.07),0 16px 36px rgba(22,24,29,.11);
+    }
+  }
+  .polaroid img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:2px}
+  .polaroid img,.cell .face,.cell .bio img{filter:saturate(.92)}
   .strip .polaroid:first-child img{object-position:88% 50%}
-  .polaroid figcaption{font-size:11.5px;color:var(--gray);margin-top:8px;line-height:1.45}
+  .polaroid figcaption{font-size:11.5px;color:var(--gray);margin-top:8px;line-height:1.45;letter-spacing:.03em}
 
   .perm{font-family:var(--disp);font-weight:700;font-size:clamp(21px,3.2vw,28px);letter-spacing:-.01em;line-height:1.35;margin-top:30px;max-width:46ch}
 
@@ -145,6 +161,7 @@
   .roster{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
   .cell{
     border:1px dashed var(--line);
+    border-radius:6px;
     min-height:82px;padding:10px 12px;
     display:flex;flex-direction:column;justify-content:space-between;
     background:rgba(251,251,247,.5);
@@ -152,9 +169,10 @@
   }
   .cell .idx{font-family:var(--disp);font-weight:700;color:var(--blue);font-size:14px}
   .cell .who{font-size:11.5px;color:var(--gray)}
-  .cell.held{border-style:solid;border-color:var(--blue);min-height:118px}
-  .cell .face{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;filter:saturate(.92)}
-  .cell.held::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(22,24,29,.32),rgba(22,24,29,0) 38%,rgba(22,24,29,0) 52%,rgba(22,24,29,.6));pointer-events:none}
+  /* No transform/translate on .cell.held, ever — the .bio popover anchors to it and jitters. */
+  .cell.held{border-style:solid;border-color:var(--blue);min-height:118px;box-shadow:0 1px 2px rgba(22,24,29,.06),0 6px 16px rgba(22,24,29,.08)}
+  .cell .face{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 25%;border-radius:5px}
+  .cell.held::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(22,24,29,.32),rgba(22,24,29,0) 38%,rgba(22,24,29,0) 52%,rgba(22,24,29,.6));pointer-events:none;border-radius:5px}
   .cell.held .idx,.cell.held .who{position:relative;z-index:2}
   .cell.held .idx{color:var(--paper)}
   .cell.held .who{color:var(--paper)}
@@ -163,15 +181,17 @@
   .cell .bio{
     position:absolute;left:-1px;top:-1px;z-index:20;
     width:230px;background:#fff;border:1px solid var(--blue);
+    border-radius:6px;
+    box-shadow:0 2px 6px rgba(22,24,29,.10),0 18px 44px -12px rgba(22,24,29,.28);
     padding:8px 8px 10px;font-size:11.5px;line-height:1.5;color:var(--ink);
     visibility:hidden;opacity:0;transform:scale(.96);transform-origin:top left;
     transition:opacity .15s ease,transform .15s ease,visibility .15s;
     pointer-events:none;
   }
   .cell:hover .bio,.cell:focus-within .bio{visibility:visible;opacity:1;transform:scale(1);pointer-events:auto}
-  .cell .bio img{display:block;width:100%;height:150px;object-fit:cover;object-position:center 25%;margin-bottom:8px;filter:saturate(.92)}
+  .cell .bio img{display:block;width:100%;height:150px;object-fit:cover;object-position:center 25%;margin-bottom:8px;border-radius:2px}
   .cell .bio b{font-weight:600}
-  .cell .who .mark{height:11px;width:auto;display:inline-block;vertical-align:middle;margin-left:6px;background:var(--paper);padding:1px 3px;box-sizing:content-box}
+  .cell .who .mark{height:11px;width:auto;display:inline-block;vertical-align:middle;margin-left:6px;background:var(--paper);padding:1px 3px;box-sizing:content-box;border-radius:2px}
   .adv .cell .who{margin-top:auto}
 
   footer{padding:44px 0 64px;font-size:12.5px;color:var(--gray)}
@@ -183,7 +203,10 @@
     .rows .row{grid-template-columns:1fr;gap:4px}
     .roster{grid-template-columns:repeat(4,1fr)}
     table.offer td:first-child{width:120px}
-    .strip{grid-template-columns:1fr;gap:18px}
+    .strip{grid-template-columns:1fr;gap:24px}
+    .strip .polaroid:nth-child(1){--tilt:-.7deg}
+    .strip .polaroid:nth-child(2){--tilt:.5deg}
+    .strip .polaroid:nth-child(3){--tilt:-.4deg}
   }
   @media(max-width:440px){
     .roster{grid-template-columns:repeat(2,1fr)}
