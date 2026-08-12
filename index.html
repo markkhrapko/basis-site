@@ -173,6 +173,14 @@
   .cell .who .mark{height:11px;width:auto;display:inline-block;vertical-align:middle;margin-left:6px;background:var(--paper);padding:1px 3px;box-sizing:content-box;border-radius:2px}
   .adv .cell .who{margin-top:auto}
 
+  .qa summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;user-select:none;width:fit-content}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa .q-mark{font-family:var(--disp);font-weight:700;color:var(--blue);font-size:17px;line-height:1;transition:transform .2s ease}
+  .qa[open] .q-mark{transform:rotate(45deg)}
+  .qa summary:hover .q-mark{transform:scale(1.25)}
+  .qa[open] summary:hover .q-mark{transform:rotate(45deg) scale(1.25)}
+  .qa .rows{margin-top:22px}
+
   footer{padding:44px 0 64px;font-size:12.5px;color:var(--gray)}
   footer .lineage{margin-bottom:12px;max-width:70ch}
   footer a{color:var(--blue)}
@@ -238,7 +246,7 @@
       </tr>
       <tr>
         <td>THE NETWORK</td>
-        <td><b>This is where they meet.</b><br>Every fellow, from every cohort, for life.</td>
+        <td><b>People like you.</b><br>Pushing toward the impossible.</td>
       </tr>
     </table>
   </div>
@@ -317,14 +325,16 @@
 
 <section id="terms">
   <div class="wrap">
-    <p class="label">[ QUESTIONS / HOW IT WORKS ]</p>
-    <div class="rows">
+    <details class="qa">
+      <summary><span class="label" style="margin:0">[ QUESTIONS / HOW IT WORKS ]</span><span class="q-mark">+</span></summary>
+      <div class="rows">
       <div class="row"><div class="k">NO STRINGS</div><div class="v">We take nothing and expect nothing. There's no equity and no reporting, and you can spend the money on anything.</div></div>
       <div class="row"><div class="k">WHY JOIN</div><div class="v">You can come for the money, the community, or both. All three are fine with us.</div></div>
       <div class="row"><div class="k">WHO CAN APPLY</div><div class="v">Anyone can, whether you're an operator, an engineer, a scientist, or something else entirely. Applications are always open, and we read every one.</div></div>
       <div class="row"><div class="k">YOUR APPLICATION</div><div class="v">It never expires. When something new happens, write to us again, and we'll read it against your last one.</div></div>
       <div class="row"><div class="k">PRIVATE</div><div class="v">Being announced or listed is up to you. If you'd rather stay quiet, that's fine too.</div></div>
-    </div>
+      </div>
+    </details>
   </div>
 </section>
 <footer>
