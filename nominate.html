@@ -244,10 +244,11 @@
         <div class="field"><label for="n-why">Why them?</label><textarea id="n-why" required></textarea></div>
         <button class="btn primary" type="submit">Send nomination</button>
         <p class="trust">We reach out personally. They'll never know who nominated them unless you want them to.</p>
+        <p class="trust">Worth reaching out to them yourself as well &mdash; our email can land in spam.</p>
       </form>
       <div class="success" id="success-nominate">
         <h3>Sent.</h3>
-        <p>We'll reach out to them. Thanks for looking out.</p>
+        <p>We'll reach out to them. Tell them yourself too, in case our email lands in spam. Thanks for looking out.</p>
       </div>
     </div>
   </div>
@@ -311,7 +312,7 @@
     BASIS.submit('nominate', fields, [], 'nominate')
       .then(function(){
         var s=document.getElementById('success-nominate');
-        s.innerHTML='<h3>Sent.</h3><p>We’ll reach out to them. Thanks for looking out.</p>';
+        s.innerHTML='<h3>Sent.</h3><p>We’ll reach out to them. Tell them yourself too, in case our email lands in spam. Thanks for looking out.</p>';
         form.style.display='none'; s.style.display='block';
       })
       .catch(function(err){
