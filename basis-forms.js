@@ -81,9 +81,9 @@ window.BASIS = {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', endpointFor(type));
       xhr.setRequestHeader('Accept', 'application/json');
-      if (prog && files && files.length) {
-        xhr.upload.onprogress = function (e) { if (e.lengthComputable) prog(0, e.loaded / e.total); };
-      }
+      // No xhr.upload listener on purpose: registering one forces a CORS
+      // preflight (OPTIONS), which some corporate/university proxies block.
+      if (prog && files && files.length) prog(files.length);
       xhr.onload = function () {
         if (xhr.status >= 200 && xhr.status < 300) { resolve(ref); return; }
         var msg = 'submit';

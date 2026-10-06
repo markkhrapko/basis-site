@@ -444,7 +444,7 @@
     btn.disabled=true; status.style.color='var(--gray)'; status.textContent='Sending…';
     var fields = which==='apply'?collectApply():collectUpdate();
     var files=fileInput?fileInput.files:[];
-    var up = files.length?BASIS.uploadFiles(files,function(i,p){status.textContent='Uploading file '+(i+1)+' of '+files.length+' — '+Math.round(p*100)+'%';}):Promise.resolve([]);
+    var up = files.length?BASIS.uploadFiles(files,function(n){status.textContent='Uploading '+n+(n===1?' file':' files')+'…';}):Promise.resolve([]);
     up.then(function(keys){ status.textContent='Sending…'; return BASIS.submit(which, fields, keys, 'apply-'+which); })
       .then(function(id){ showSuccess(which,id); })
       .catch(function(err){ showError(which, form, fields, err); btn.disabled=false; });
