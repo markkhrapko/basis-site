@@ -452,9 +452,9 @@
   function showSuccess(which,id){
     var s=document.getElementById('success-'+which);
     if(which==='apply'){
-      s.innerHTML='<h3>We got it.</h3><p>Your reference: <b>'+id+'</b> — keep it. Any questions or problems, email basis [at] orbit.engineering.</p>';
+      s.innerHTML='<h3>We got it.</h3><p>Your reference: <b>'+id+'</b> — keep it. This screen is your confirmation; no email is coming. Any questions or problems, email basis [at] orbit.engineering.</p>';
     } else {
-      s.innerHTML='<h3>Updated.</h3><p>We’ll read it against your last one. Reference: <b>'+id+'</b>.</p>';
+      s.innerHTML='<h3>Updated.</h3><p>We’ll read it against your last one. Reference: <b>'+id+'</b>. This screen is your confirmation; no email is coming.</p>';
     }
     document.getElementById('form-'+which).style.display='none';
     s.style.display='block';
