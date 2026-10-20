@@ -93,6 +93,9 @@ window.BASIS = {
         reject(new Error(msg));
       };
       xhr.onerror = function () { reject(new Error('network')); };
+      // Formspree cuts requests at 30s server-side; this catches uploads that stall without dying.
+      xhr.timeout = 120000;
+      xhr.ontimeout = function () { reject(new Error('network')); };
       xhr.send(fd);
     });
   }

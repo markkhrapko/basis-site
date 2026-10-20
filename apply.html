@@ -361,9 +361,10 @@
     var problem = fileProblem(input);
     if (problem){ el.style.color = 'var(--blue)'; el.textContent = problem; return; }
     el.style.color = 'var(--gray)';
-    var out = [];
-    for (var i=0;i<input.files.length;i++){ out.push(input.files[i].name); }
+    var out = [], total = 0;
+    for (var i=0;i<input.files.length;i++){ out.push(input.files[i].name); total += input.files[i].size; }
     el.textContent = out.length ? '\u2192 ' + out.join(', ') : '';
+    if (total > 20*1024*1024){ el.style.color = 'var(--blue)'; el.textContent += ' \u2014 over 20MB total, which can fail to send on slower connections. Links are more reliable.'; }
   }
   function makeChips(boxId, opts){
     opts = opts || {};
@@ -466,8 +467,15 @@
     var msg=document.createElement('div');
     msg.textContent = /rate/.test(m) ? 'Too many attempts — wait a few minutes and press retry. Your answers are safe.'
       : /toolarge/.test(m) ? 'Those files are too large to send. Keep each under 25MB (90MB total), or paste links in the portfolio field, then retry. Your answers are safe.'
+      : /network/.test(m) ? 'The connection dropped while sending. If you attached files, they may be too big for this connection — paste links in the portfolio field instead, or retry on a different network. Your answers are safe.'
       : 'Something went wrong sending it. Your answers are safe — retry, or download them and email us.';
     status.appendChild(msg);
+    if(!/rate|toolarge/.test(m)){
+      var det=document.createElement('div'); det.style.cssText='font-size:12px;opacity:.75;margin-top:6px';
+      det.textContent='If you email us, include this: '+(m||'unknown')+'.';
+      status.appendChild(det);
+    }
+    fields.errorDetail=m||'unknown';
     var retry=document.createElement('button'); retry.type='button'; retry.className='btn'; retry.textContent='Retry'; retry.style.marginTop='10px'; retry.onclick=function(){ runSubmit(which); };
     var dl=document.createElement('button'); dl.type='button'; dl.className='btn'; dl.textContent='Download my answers'; dl.style.margin='10px 0 0 8px'; dl.onclick=function(){ BASIS.downloadAnswers('basis-application', fields); };
     status.appendChild(retry); status.appendChild(dl);

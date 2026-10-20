@@ -322,6 +322,7 @@
         var msg=document.createElement('div');
         msg.textContent=rate?'Too many attempts — wait a few minutes and press retry.':'Something went wrong. Your entry is still here — press retry.';
         status.appendChild(msg);
+        if(!rate){ var det=document.createElement('div'); det.style.cssText='font-size:12px;opacity:.75;margin-top:6px'; det.textContent='If you email us, include this: '+((err&&err.message)||'unknown')+'.'; status.appendChild(det); }
         var retry=document.createElement('button'); retry.type='button'; retry.className='btn'; retry.textContent='Retry'; retry.style.marginTop='10px'; retry.onclick=function(){ submitForm(new Event('submit'),'nominate'); };
         status.appendChild(retry);
       });
